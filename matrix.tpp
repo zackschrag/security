@@ -1,3 +1,9 @@
+/*
+*	Zack Schrag
+*	CS356
+*	2-13-2014
+*/
+
 #ifndef MATRIX_H
 #define MATRIX_H
 
@@ -136,6 +142,7 @@ void Matrix<ELEMENT>::add(ELEMENT i) {
 	if ( !(_size < _width*_height && _size >= 0) ) {
 		//cout << "size: " << _size << endl;
 		//cout << "pos: " << 
+		cout << "size: " << _size << endl;
 		throw std::out_of_range("Error in Matrix class: invalid add() operation");
 	}
 	else {

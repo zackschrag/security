@@ -4,8 +4,8 @@
 *	2-13-2014
 */
 
-#ifndef ENCRYPT_H 
-#define	ENCRYPT_H
+#ifndef DECRYPT_H 
+#define	DECRYPT_H
 
 #include <matrix.tpp>
 #include <stdlib.h>
@@ -28,7 +28,7 @@ using std::stringstream;
 using std::vector;
 
 typedef unsigned int uint;
-class Encrypt {
+class Decrypt {
 public:
 	string key1;
 	string key2;
@@ -38,8 +38,8 @@ public:
 	Matrix<char>* clearTextTable;	
 	Matrix<char>* cipherTextTable;
 	
-	Encrypt(string k1, string k2, string filename);
-	~Encrypt();
+	Decrypt(string k1, string k2, string filename);
+	~Decrypt();
 
 private:
 	// check if key is valid: alphabetic chars, > 10 chars
@@ -49,8 +49,6 @@ private:
 	string getSentence();
 	void buildTable();
 	int indexOf(vector<char> v, char c);
-	void encryptTable(Matrix<char>* table);
-
 };
 
 #endif

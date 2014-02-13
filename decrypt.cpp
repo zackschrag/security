@@ -4,9 +4,9 @@
 *	2-13-2014
 */
 
-#include <encrypt.h>
+#include <decrypt.h>
 
-Encrypt::Encrypt(string k1, string k2, string fn) {
+Decrypt::Decrypt(string k1, string k2, string fn) {
 	key1 = k1;
 	key2 = k2;
 	filename = fn;
@@ -14,14 +14,14 @@ Encrypt::Encrypt(string k1, string k2, string fn) {
 	buildTable();
 }
 
-Encrypt::~Encrypt() {
+Decrypt::~Decrypt() {
 	delete clearTextTable;
 	clearTextTable = NULL;
 	delete cipherTextTable;
 	cipherTextTable = NULL;
 }
 
-string Encrypt::getSentence() {
+string Decrypt::getSentence() {
 	string message = "";
 	string line;
 
@@ -36,7 +36,7 @@ string Encrypt::getSentence() {
 	return message;
 }
 
-int Encrypt::indexOf(vector<char> v, char c) {
+int Decrypt::indexOf(vector<char> v, char c) {
 	for (uint i = 0; i < v.size(); i++) {
 		if (v.at(i) == c) {
 			return i;
@@ -45,7 +45,7 @@ int Encrypt::indexOf(vector<char> v, char c) {
 	return -1;
 }
 
-void Encrypt::buildTable() {
+void Decrypt::buildTable() {
 	int width = 10;
 	int height;
 	int sentenceLength = sentence.length();
@@ -63,6 +63,7 @@ void Encrypt::buildTable() {
 	for (uint i = 0; i < key1.length(); i++) {
 		letters.push_back(key1.at(i));			
 	}
+
 	sortedLetters = letters;
 	std::sort(sortedLetters.begin(), sortedLetters.end());	
 
@@ -72,37 +73,36 @@ void Encrypt::buildTable() {
 	}
 
 	for (int i = 0; i < width; i++) {
-		clearTextTable->add(key1.at(i));
+		clearTextTable->add(key2.at(i));
 	}
 
 	int size = clearTextTable->width()*clearTextTable->height();
-	for (int i = 0; i < size-(width); i++) {
-		if (i >= sentenceLength) {
-			clearTextTable->add('X');
-		}
-		else {
-			clearTextTable->add(sentence.at(i));
-		}
+	for (int i = 0; i < size-width; i++) {
+		clearTextTable->add(sentence.at(i));
 	}
 	//clearTextTable->print();
 
 	cipherTextTable = new Matrix<char>(width, height);
-	// push key2 to top
+	// push key1 to top
 	for (int i = 0; i < cipherTextTable->width(); i++) {
-		cipherTextTable->add(key2.at(i));
+		cipherTextTable->add(key1.at(i));
 	}
+	int ctr = 0;
 	for (int row = 0; row < clearTextTable->width(); row++) {
 		for (int col = 1; col < clearTextTable->height(); col++) {
-			cipherTextTable->add(clearTextTable->at(col, indices[row]));
+			cipherTextTable->set(col, indices[row], sentence.at(ctr));
+			ctr++;
 		}
 	}
 	//cout << endl;
 	//cipherTextTable->print();
-	ofstream outfile("Zack-Schrag-encrypted-str.txt");
+	ofstream outfile("Zack-Schrag-decrypted-str.txt");
 	for (int i = 1; i < cipherTextTable->height(); i++) {
 		for (int j = 0; j < cipherTextTable->width(); j++) {
 			outfile << cipherTextTable->at(i, j);
 		}
 	}
 }
-
+// key1: cryptographic
+// key2: networksecurity
+// filename: Zack-Schrag-encrypted-str.txt

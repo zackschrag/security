@@ -1,4 +1,10 @@
-#include <encrypt.h>
+/*
+*	Zack Schrag
+*	CS356
+*	2-13-2014
+*/
+
+#include <decrypt.h>
 
 bool validate(string key);
 string modify(string key);
@@ -18,17 +24,21 @@ bool validate(string key) {
 }
 
 string modify(string key) {
+	string modifiedKey = key;
+	std::transform(modifiedKey.begin(), modifiedKey.end(), modifiedKey.begin(), ::tolower);
+	modifiedKey.erase( std::remove_if( modifiedKey.begin(), modifiedKey.end(), ::isspace ), modifiedKey.end() );
 	vector<char> letters;
-	string newKey = "";
-	for (uint i = 0; i < key.length(); i++) {
+	string newKey;
+
+	for (uint i = 0; i < modifiedKey.length(); i++) {
 		bool unique = true;
 		for (uint j = 0; j < letters.size(); j++) {
-			if (key.at(i) == letters[j]) {
+			if (modifiedKey.at(i) == letters[j]) {
 				unique = false;
 			}			
 		}
 		if (unique) {
-			letters.push_back(key.at(i));			
+			letters.push_back(modifiedKey.at(i));			
 		}
 	}
 
@@ -42,7 +52,7 @@ string modify(string key) {
 	for (uint i = 0; i < letters.size(); i++) {
 		newKey.push_back(letters[i]);
 	}
-
+	//cout << "key: " << newKey << endl;
 	return newKey;
 }
 
@@ -81,7 +91,7 @@ int main(int argc, char* argv[]) {
 	string newKey2(k2);
 	string mKey1 =	modify(newKey1);
 	string mKey2 =	modify(newKey2);
-	Encrypt en(mKey1, mKey2, filename);
+	Decrypt de(mKey1, mKey2, filename);
 
 	return 0;
 }

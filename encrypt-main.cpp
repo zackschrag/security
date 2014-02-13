@@ -52,7 +52,7 @@ string modify(string key) {
 	for (uint i = 0; i < letters.size(); i++) {
 		newKey.push_back(letters[i]);
 	}
-	cout << "key: " << newKey << endl;
+	//cout << "key: " << newKey << endl;
 	return newKey;
 }
 

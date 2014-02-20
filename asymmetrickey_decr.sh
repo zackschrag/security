@@ -53,10 +53,26 @@ printf "" :> "Zack-Schrag.plaintext";
 while read line
 do
 	message+=$line
+	message+=" "
 done < $2
-echo $message
 
+ctr=0
+arr=($message)
+arr_len=${#arr[@]}
 
+while [ $ctr -lt $arr_len ]
+do
+	decrypt=$(echo ${arr[ctr]}^$d%$n | bc)
+	char=$(echo $decrypt | awk '{ printf("%c",$0); }') 
+	#echo $char
+	if [ ${arr[ctr]} -eq 0 ]; then
+		printf " " >> "Zack-Schrag.plaintext";
+	else
+		printf "%c" "$char" >> "Zack-Schrag.plaintext";
+	fi
+	let ctr++
+done
+printf "\n" >> "Zack-Schrag.plaintext";
 
 
 
